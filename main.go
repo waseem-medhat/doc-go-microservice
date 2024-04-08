@@ -1,26 +1,16 @@
 package main
 
 import (
-	"log"
-	"net/http"
+	"context"
+	"fmt"
 
-	chi "github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
+	"github.com/wipdev-tech/doc-go-microservice/application"
 )
 
 func main() {
-	router := chi.NewRouter()
-	router.Get("/hello", basicHandler)
-	router.Use(middleware.Logger)
-
-	server := &http.Server{
-		Addr:    ":8080",
-		Handler: router,
+	app := application.New()
+	err := app.Start(context.TODO())
+	if err != nil {
+		fmt.Println(err)
 	}
-
-	log.Fatal(server.ListenAndServe())
-}
-
-func basicHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hiyaa!!"))
 }
